@@ -25,7 +25,7 @@ jobs:
     - name: Build & push Docker image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: javatechie/springboot-images-new
+        image: pavan9999/github-actions
         tags: latest
         registry: docker.io
         dockerfile: Dockerfile
