@@ -21,6 +21,11 @@ jobs:
         cache: maven
      - name: Build with Maven
        run: mvn clean install
+     - name: Upload Artifacts
+       uses: actions/upload-artifact@v2
+       with: 
+          name: artifacts
+          path: /home/runner/work/cicd-github-actions/cicd-github-actions/target/*.jar
 
      - name: Build & push Docker image
        uses: mr-smithers-excellent/docker-build-push@v5
