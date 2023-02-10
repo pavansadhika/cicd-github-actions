@@ -79,7 +79,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: junit-results
-        path: path/to/**
+        path: reults.html
 
     - name: Publish JUnit Test Report
       run: echo "JUnit test results uploaded successfully."
