@@ -32,16 +32,27 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         
+  jmeter-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+    - name: Install Apache JMeter
+      run: |
+        wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
+        tar -xf apache-jmeter-${JMETER_VERSION}.tgz
+        rm apache-jmeter-${JMETER_VERSION}.tgz
+
+    - name: Run Apache JMeter test
+      run: |
+        ${JMETER_HOME}/bin/jmeter -n -t path/to/your/jmeter/test.jmx -l results.jtl
         
-     - name: SonarQube Scan
-       uses: sonarsource/sonarqube-scan-action@master
-       env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-     - name: SonarQube Quality Gate check
-       uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time
-       timeout-minutes: 5
-       env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-     
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: jmeter-test-results
+        path: results.jtl
