@@ -34,25 +34,25 @@ jobs:
         
   jmeter-test:
     runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-    - name: Install Apache JMeter
-      run: |
-        wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
-        tar -xf apache-jmeter-${JMETER_VERSION}.tgz
-        rm apache-jmeter-${JMETER_VERSION}.tgz
 
-    - name: Run Apache JMeter test
-      run: |
-        ${JMETER_HOME}/bin/jmeter -n -t path/to/your/jmeter/test.jmx -l results.jtl
-        
-    - name: Upload test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: jmeter-test-results
-        path: results.jtl
+    steps:
+     - name: Checkout code
+       uses: actions/checkout@v2
+     - name: Setup Java
+       uses: actions/setup-java@v1
+       with:
+          java-version: 11
+     - name: Download and extract JMeter
+       run: |
+         curl -L https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.5.zip -o jmeter.zip
+         unzip jmeter.zip
+
+     - name: Run JMeter test
+       run: |
+         ./apache-jmeter-5.5/bin/jmeter -n -t test.jmx -l result.jtl
+
+     - name: Upload test results    
+       uses: actions/upload-artifact@v2
+       with:
+          name: jmeter-test-results
+          path: results.jtl
