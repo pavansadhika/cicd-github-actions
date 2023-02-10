@@ -53,7 +53,7 @@ jobs:
     - name: Publish JUnit Test Report
       run: echo "JUnit test results uploaded successfully."
   Docker-Image-Build-Push:
-    needs: junit-test
+    needs: build
     runs-on: ubuntu-latest
     steps: 
     - name: Checkout code
