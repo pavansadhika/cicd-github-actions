@@ -56,3 +56,29 @@ jobs:
        with:
           name: jmeter-test-results
           path: results.jtl
+  junit-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+
+    - name: Build and Test
+      run: mvn test
+
+    - name: Upload JUnit Test Results
+      uses: actions/upload-artifact@v2
+      with:
+        name: junit-results
+        path: target/test
+
+    - name: Publish JUnit Test Report
+      run: echo "JUnit test results uploaded successfully."
+ 
+          
+          
+          
