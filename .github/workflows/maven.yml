@@ -74,7 +74,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: junit-results
-        path: target/test
+        path: path/to/untitest_result
 
     - name: Publish JUnit Test Report
       run: echo "JUnit test results uploaded successfully."
