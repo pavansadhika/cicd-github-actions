@@ -10,6 +10,10 @@ on:
 env:
   IMAGE_NAME: pavan9999/github-actions
   IMAGE_TAG: moonpage
+  AWS_REGION: us-east-1
+  ECS_CLUSTER: ECS-Cluster
+  ECS_SERVICE: github-svc
+  ECS_TASK_DEFINITION: github-task
   
 jobs:
   build:
@@ -39,6 +43,23 @@ jobs:
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Deploy to Amazon ECS
+      run: |
+        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{env.ECS_SERVICE}} --task-definition ${{ env.ECS_TASK_DEFINITION }}
   junit-test:
     needs: build
     runs-on: ubuntu-latest
@@ -62,7 +83,7 @@ jobs:
     - name: Publish JUnit Test Report
       run: echo "JUnit test results uploaded successfully."
   jmeter-test:
-    needs: build
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
      - name: Checkout code
