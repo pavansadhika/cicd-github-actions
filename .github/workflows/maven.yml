@@ -44,6 +44,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
   deploy:
+    env:
+      AWS_REGION: us-east-1
+      ECS_CLUSTER: ECS-Cluster
+      ECS_SERVICE: github-svc
+      ECS_TASK_DEFINITION: github-task
     needs: build
     runs-on: ubuntu-latest
     steps:
