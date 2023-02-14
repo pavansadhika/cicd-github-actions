@@ -45,21 +45,13 @@ jobs:
        env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         #Dependency-Check(Security Composition Analysis)
-     - name: Dependency-Check(SCA) Stage
-       run: |
-          wget https://github.com/jeremylong/DependencyCheck/releases/download/v6.0.5/dependency-check-6.0.5-release.zip
-           unzip dependency-check-6.0.5-release.zip
-           chmod -R 775 dependency-check/bin/dependency-check.sh
-           cp ./target/*.jar dependency-check
-           cd dependency-check
-           ./bin/dependency-check.sh --project test --format HTML --scan *.jar
-           ls -lrt && pwd && cat dependency-check-report.html
-           cd ..
-     - name: Upload Test results
-       uses: actions/upload-artifact@master
+     - name: Run dependency check
+       run: mvn org.owasp:dependency-check-maven:check
+     - name: Upload results
+       uses: actions/upload-artifact@v2
        with:
-          name: DependencyCheck-report
-          path: ./target/*.html
+          name: dependency-check-report
+          path: ./target/dependency-check-report.html   
      - name: Docker-Image-Build & Push
        uses: mr-smithers-excellent/docker-build-push@v5
        with:
