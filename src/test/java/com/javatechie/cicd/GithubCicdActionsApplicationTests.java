@@ -9,13 +9,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class GithubCicdActionsApplicationTests 
-{ 
+@SpringBootTest
+class GithubCicdActionsApplicationTests {
+
 	public WebDriver driver; 
-	public String baseUrl = "https://www.lambdatest.com/";  
-	
-	@Test             
-	public void contextLoads() {      
+	public String baseUrl = "https://www.lambdatest.com/"; 
+	@Test
+	void contextLoads() {
 		
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
@@ -28,5 +28,16 @@ public class GithubCicdActionsApplicationTests
 		driver.manage().window().maximize();  
 		driver.get(baseUrl);
 		driver.close();
-	}     
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
