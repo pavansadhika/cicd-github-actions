@@ -74,7 +74,7 @@ jobs:
        uses: actions/upload-artifact@v2
        with:
           name: trivy-scan-results
-          path: ./target/trivy/*
+          path: ./target/trivy-scan-results.html
   deploy:
     env:
       AWS_REGION: us-east-1
@@ -116,9 +116,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: junit-results
-        path: ./target/junitreports/
+        path: ./target/*
     - name: Publish JUnit Test Report
       run: echo "JUnit test results uploaded successfully."
+  
   jmeter-test:
     needs: junit-test
     runs-on: ubuntu-latest
